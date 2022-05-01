@@ -15,7 +15,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="25.0">
          <children>
-            <Label prefHeight="16.0" prefWidth="151.0" text="Guess a Word!">
+            <Label fx:id="mainLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="151.0" text="Guess a Word!">
                <font>
                   <Font name="Arial" size="22.0" />
                </font>

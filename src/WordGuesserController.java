@@ -7,12 +7,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 public class WordGuesserController implements Initializable {
@@ -34,6 +36,9 @@ public class WordGuesserController implements Initializable {
     private WordList wordList = new WordList();
 
     private String[] words = wordList.getWords();
+
+    @FXML
+    private Label mainLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -84,7 +89,7 @@ public class WordGuesserController implements Initializable {
     }
 
 
-    public void makeGuess() {
+    public void makeGuess() throws SQLException {
         TreeMap<Integer, String> currentGuessTM = new TreeMap<>();
 
         if (!guessed && attemptCounter < maxCounter) {
@@ -102,7 +107,6 @@ public class WordGuesserController implements Initializable {
             //combine char array to string
             StringBuilder sb = new StringBuilder();
             for (Integer i : currentGuessTM.keySet()) {
-                System.out.println(currentGuessTM);
                 sb.append(currentGuessTM.get(i));
             }
             String currentGuess = sb.toString();
@@ -137,9 +141,25 @@ public class WordGuesserController implements Initializable {
                     }
                 }
                 attemptCounter++;
+
+                if (guessed){
+                   wordIsGuessed();
+                }
             } else System.out.println("Not in a word list!");
         }
         System.out.println(attemptCounter);
+    }
+
+    private void wordIsGuessed() {
+        try {
+            DBUtility.addStatistic(attemptCounter);
+            System.out.println(DBUtility.getAttemptStatistics());
+        } catch (SQLException e){
+            System.out.println(e);
+        }
+
+        mainLabel.setText("Well Done!");
+
     }
 
 
