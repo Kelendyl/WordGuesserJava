@@ -39,7 +39,7 @@
             </GridPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button fx:id="getNewWordBtn" alignment="CENTER" mnemonicParsing="false" onAction="#getNewWord" text="Get a new Word" />
+                  <Button fx:id="getNewWordBtn" alignment="CENTER" mnemonicParsing="false" onAction="#resetScene" text="Get a new Word" />
                   <Button alignment="CENTER" mnemonicParsing="false" text="Statistics" />
                   <Button fx:id="makeGuessBtn" alignment="CENTER" mnemonicParsing="false" onAction="#makeGuess" text="Make a Guess" />
                </children>

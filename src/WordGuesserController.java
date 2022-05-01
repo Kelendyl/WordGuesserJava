@@ -13,8 +13,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class WordGuesserController implements Initializable {
 
@@ -24,14 +23,22 @@ public class WordGuesserController implements Initializable {
     @FXML
     private GridPane gridPane;
 
-    private String word = "watch";
+    private String word;
 
-    private int counter = 0;
+    private int attemptCounter = 0;
 
-    boolean guessed = false;
+    private boolean guessed = false;
+
+    private int maxCounter = 6;
+
+    private WordList wordList = new WordList();
+
+    private String[] words = wordList.getWords();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        word = getWord();
+        System.out.println(word);
         int textFieldId = 0;
 
         //Generate textFields for every gridPane cell
@@ -40,9 +47,9 @@ public class WordGuesserController implements Initializable {
                 TextField textField = new TextField();
                 textField.setAlignment(Pos.CENTER);
                 int finalTextFieldId = textFieldId;
-                textField.setPromptText(String.valueOf(finalTextFieldId));
+                //textField.setPromptText(String.valueOf(finalTextFieldId));
 
-                if (i != counter) {
+                if (i != attemptCounter) {
                     textField.setEditable(false);
                 }
                 //add input listener to textField
@@ -67,11 +74,10 @@ public class WordGuesserController implements Initializable {
     private void validateInput(TextField textField, String oldValue, String newValue, int finalTextFieldId) {
         if (!newValue.matches("[A-Za-z]") && !newValue.isBlank() || textField.getText().length() > 1) {
             textField.setText(oldValue);
-        } else if (!newValue.isBlank()){
-            System.out.println((finalTextFieldId+1) % word.length());
-            if (finalTextFieldId < 29)
+        } else if (!newValue.isBlank()) {
+            if (finalTextFieldId < maxCounter * word.length() && finalTextFieldId<29)
                 gridPane.getChildren().get(finalTextFieldId + 1).requestFocus();
-            if ((finalTextFieldId+1) % word.length() == 0){
+            if ((finalTextFieldId + 1) % word.length() == 0) {
                 makeGuessBtn.requestFocus();
             }
         }
@@ -79,60 +85,70 @@ public class WordGuesserController implements Initializable {
 
 
     public void makeGuess() {
-        if (!guessed && counter < 6){
+        TreeMap<Integer, String> currentGuessTM = new TreeMap<>();
 
-                int lettersGuessed = 0;
-
-                //for each letter in current line
-
-
-                for (int i = word.length() * counter; i < word.length() * counter + word.length(); i++) {
-                    Node node = gridPane.getChildren().get(i);
-                    if (node instanceof TextField) {
-                        TextField textField = (TextField) node;
-                        String letter = textField.getText();
-                        if (!letter.isBlank() && word.contains(letter)) {
-                            textField.setStyle("-fx-background-color: yellow;");
-                            if (letter.equalsIgnoreCase(String.valueOf(word.charAt(i - counter * word.length())))) {
-                                textField.setStyle("-fx-background-color: green;");
-                                lettersGuessed++;
-                            }
-                        } else if (!letter.isBlank()){
-                            textField.setStyle("-fx-background-color: gray;");
-                        }
-                    }
-                }
-
-                counter++;
-
-                if (lettersGuessed == word.length()) {
-                    guessed = true;
-                }
-
-
-                if (counter<word.length()) {
-                    Node node = gridPane.getChildren().get(counter*word.length());
-                    if (node instanceof TextField) {
-                        node.requestFocus();
-                    }
-                }
-
-
-                for (int i = word.length() * counter; i < word.length() * counter + word.length(); i++) {
-                    Node node = gridPane.getChildren().get(i);
-                    if (node instanceof TextField) {
-                        TextField textField = (TextField) node;
-                        textField.setEditable(true);
-                    }
+        if (!guessed && attemptCounter < maxCounter) {
+            //for each letter in current line add it to HashMap
+            for (int i = word.length() * attemptCounter; i < word.length() * attemptCounter + word.length(); i++) {
+                Node node = gridPane.getChildren().get(i);
+                if (node instanceof TextField) {
+                    TextField textField = (TextField) node;
+                    String letter = textField.getText().toLowerCase();
+                    currentGuessTM.put(i, letter);
                 }
             }
 
-            System.out.println(counter);
-            System.out.println(guessed);
+
+            //combine char array to string
+            StringBuilder sb = new StringBuilder();
+            for (Integer i : currentGuessTM.keySet()) {
+                System.out.println(currentGuessTM);
+                sb.append(currentGuessTM.get(i));
+            }
+            String currentGuess = sb.toString();
+
+            //if word is in word list proceed to the game logic
+            if (Arrays.asList(words).contains(currentGuess)) {
+
+                for (Integer i : currentGuessTM.keySet()) {
+                    Node node = gridPane.getChildren().get(i);
+                    if (node instanceof TextField) {
+                        TextField textField = (TextField) node;
+                        if (word.contains(currentGuessTM.get(i))) {
+                            textField.setStyle("-fx-background-color: yellow;");
+                            if (String.valueOf(word.charAt(i - attemptCounter * word.length())).equalsIgnoreCase(currentGuessTM.get(i))) {
+                                textField.setStyle("-fx-background-color: green;");
+                            }
+                        } else textField.setStyle("-fx-background-color: gray;");
+                    }
+                    if (currentGuess.equals(word)){
+                        guessed = true;
+                    }
+                    if (!guessed && attemptCounter<maxCounter){
+                            for (int j=i+1; j<i + word.length() + 1 && j<maxCounter*word.length(); j++) {
+                            Node nextNode = gridPane.getChildren().get(j);
+                            if (nextNode instanceof TextField) {
+                                ((TextField) nextNode).setEditable(true);
+                            }
+                            if (j % word.length() == 0){
+                                nextNode.requestFocus();
+                            }
+                        }
+                    }
+                }
+                attemptCounter++;
+            } else System.out.println("Not in a word list!");
         }
+        System.out.println(attemptCounter);
+    }
 
 
-    public void getNewWord(ActionEvent event) throws IOException {
+    private String getWord() {
+        int r = (int) (Math.random() * words.length);
+        return words[r];
+    }
+
+    public void resetScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(new Object() {
         }.getClass().getResource("WordGuesserView.fxml"));
