@@ -178,4 +178,8 @@ public class WordGuesserController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void getStatistic(ActionEvent event) throws IOException {
+        SceneChanger.changeScene(event, "StatisticsView.fxml", "Statistics");
+    }
 }
