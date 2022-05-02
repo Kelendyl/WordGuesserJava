@@ -1,0 +1,42 @@
+.root{
+    -fx-background-color:  #2D3131;
+    -fx-font-family: "Droid Sans";
+
+}
+.label{
+    -fx-text-fill: white;
+}
+.button{
+    -fx-background-color:#d9e5d6ff;
+}
+
+#mainLabel{
+    -fx-text-fill: white;
+}
+
+.chart-pie-label-line {
+    -fx-stroke:  #d9e5d6ff;
+    -fx-fill:  #d9e5d6ff;
+}
+
+.chart-pie-label {
+    -fx-fill: white;
+    -fx-font-size: 1em;
+}
+.chart-legend {
+    -fx-background-color:  #2D3131;
+    -fx-stroke:  #d9e5d6ff;
+    -fx-text-fill: black;
+}
+
+.text-field{
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #464649;
+    -fx-background-color:  #2D3131;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+}
+
+
+

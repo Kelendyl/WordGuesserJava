@@ -1,10 +1,12 @@
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.*;
@@ -35,5 +37,9 @@ public class StatisticsController implements Initializable {
         }
 
         attemptsPieChart.setData(pieChartData);
+    }
+
+    public void changeToWordGuesser(ActionEvent event) throws IOException {
+        SceneChanger.changeScene(event, "WordGuesserView.fxml", "Guess Word");
     }
 }

@@ -46,6 +46,8 @@ public class WordGuesserController implements Initializable {
         System.out.println(word);
         int textFieldId = 0;
 
+        gridPane.setHgap(5);
+        gridPane.setVgap(5);
         //Generate textFields for every gridPane cell
         for (int i = 0; i < gridPane.getRowCount(); i++) {
             for (int j = 0; j < gridPane.getColumnCount(); j++) {
@@ -119,11 +121,11 @@ public class WordGuesserController implements Initializable {
                     if (node instanceof TextField) {
                         TextField textField = (TextField) node;
                         if (word.contains(currentGuessTM.get(i))) {
-                            textField.setStyle("-fx-background-color: yellow;");
+                            textField.setStyle("-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-background-color: #ECA72C;");
                             if (String.valueOf(word.charAt(i - attemptCounter * word.length())).equalsIgnoreCase(currentGuessTM.get(i))) {
-                                textField.setStyle("-fx-background-color: green;");
+                                textField.setStyle("-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-background-color: #439336;");
                             }
-                        } else textField.setStyle("-fx-background-color: gray;");
+                        } else textField.setStyle("-fx-background-radius: 6px; -fx-border-radius: 6px; -fx-background-color: #67676B;");
                     }
                     if (currentGuess.equals(word)){
                         guessed = true;
@@ -150,10 +152,10 @@ public class WordGuesserController implements Initializable {
         System.out.println(attemptCounter);
     }
 
+    //after word is guessed save attempt count to DB
     private void wordIsGuessed() {
         try {
             DBUtility.addStatistic(attemptCounter);
-            System.out.println(DBUtility.getAttemptStatistics());
         } catch (SQLException e){
             System.out.println(e);
         }
@@ -163,22 +165,26 @@ public class WordGuesserController implements Initializable {
     }
 
 
+    // Get a random word from a list
     private String getWord() {
         int r = (int) (Math.random() * words.length);
         return words[r];
     }
 
+    /**
+     * This function reinitialize scene to start a new attempt
+     * @param event
+     * @throws IOException
+     */
     public void resetScene(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(new Object() {
-        }.getClass().getResource("WordGuesserView.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+        SceneChanger.changeScene(event, "WordGuesserView.fxml", "Guess Word");
     }
 
+    /**
+     * This function shows statistics scene
+     * @param event
+     * @throws IOException
+     */
     public void getStatistic(ActionEvent event) throws IOException {
         SceneChanger.changeScene(event, "StatisticsView.fxml", "Statistics");
     }

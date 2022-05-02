@@ -11,16 +11,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WordGuesserController">
+<AnchorPane prefHeight="500.0" prefWidth="334.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="WordGuesserController">
    <children>
-      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="400.0" spacing="25.0">
+      <VBox alignment="CENTER" prefHeight="500.0" prefWidth="405.0" spacing="25.0">
          <children>
             <Label fx:id="mainLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="151.0" text="Guess a Word!">
                <font>
                   <Font name="Arial" size="22.0" />
                </font>
             </Label>
-            <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="275.0" prefWidth="275.0">
+            <GridPane fx:id="gridPane" alignment="CENTER" prefHeight="400.0" prefWidth="365.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,12 +36,15 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </GridPane>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+            <HBox alignment="CENTER" prefHeight="48.0" prefWidth="359.0" spacing="20.0">
                <children>
-                  <Button fx:id="getNewWordBtn" alignment="CENTER" mnemonicParsing="false" onAction="#resetScene" text="Get a new Word" />
-                  <Button fx:id="goToStatsButton" alignment="CENTER" mnemonicParsing="false" onAction="#getStatistic" text="Statistics" />
-                  <Button fx:id="makeGuessBtn" alignment="CENTER" mnemonicParsing="false" onAction="#makeGuess" text="Make a Guess" />
+                  <Button id="button" fx:id="getNewWordBtn" alignment="CENTER" mnemonicParsing="false" onAction="#resetScene" text="Get a new Word" />
+                  <Button id="button" fx:id="goToStatsButton" alignment="CENTER" mnemonicParsing="false" onAction="#getStatistic" text="Statistics" />
+                  <Button id="button" fx:id="makeGuessBtn" alignment="CENTER" mnemonicParsing="false" onAction="#makeGuess" text="Make a Guess" />
                </children>
                <VBox.margin>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -49,7 +52,7 @@
             </HBox>
          </children>
          <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            <Insets left="20.0" right="20.0" top="20.0" />
          </padding>
       </VBox>
    </children>
