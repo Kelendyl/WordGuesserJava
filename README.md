@@ -1,4 +1,4 @@
-This is a word guessing game inspired by The New York Times Wordle (https://www.nytimes.com/games/wordle/index.html)
+This is a Java based desktop word guessing game inspired by The New York Times Wordle (https://www.nytimes.com/games/wordle/index.html)
 
 Player has 6 attempts to guess random 5 letter word from specified list. If letter from player guess is present in the chosen word, it is highlighted in yellow.
 If it stands on the same position as in the answer, it is highlighted in green.
